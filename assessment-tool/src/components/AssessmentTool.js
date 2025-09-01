@@ -298,7 +298,7 @@ const AssessmentTool = () => {
     return total <= 15 || downgradeFlags.length > 0 || modifyFlags.length > 0;
   };
 
-  // CONDENSED EXPORT FUNCTION (25 fields)
+  // CONDENSED EXPORT FUNCTION (25 fields) - FIXED SERVER URL
   const exportToGoogleSheets = async () => {
     setExporting(true);
     
@@ -489,7 +489,7 @@ const AssessmentTool = () => {
         assessmentCompleteFlag: true
       };
 
-      const response = await fetch('http://localhost:3001/export', {
+      const response = await fetch('https://sim-assessment-tool.onrender.com/export', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
