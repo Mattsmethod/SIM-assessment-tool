@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
@@ -23,7 +23,6 @@ const auth = new google.auth.GoogleAuth({
   credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
   scopes: SCOPES,
 });
-  });
   
   const authClient = await auth.getClient();
   return google.sheets({ version: 'v4', auth: authClient });
