@@ -19,10 +19,10 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const SPREADSHEET_ID = '1v0V-Ny8HVjXI03jpn6J5jFh_foIHGw_SyoGL1F2Jfc8';
 
 async function getGoogleSheetsClient() {
-  const keyFile = path.join(__dirname, 'credentials', 'sim-assessment-credentials.json');
-  const auth = new google.auth.GoogleAuth({
-    keyFile: keyFile,
-    scopes: SCOPES,
+const auth = new google.auth.GoogleAuth({
+  credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
+  scopes: SCOPES,
+});
   });
   
   const authClient = await auth.getClient();
