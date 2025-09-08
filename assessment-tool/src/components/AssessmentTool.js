@@ -1678,7 +1678,6 @@ const AssessmentTool = () => {
     </div>
   </div>
 </div>
-  };
 
   // Strength Testing Section (same as before)
   const renderStrengthTesting = () => (
