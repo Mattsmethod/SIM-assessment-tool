@@ -1053,632 +1053,502 @@ const AssessmentTool = () => {
 
   // Complete Fundamental 8 Section with Priority Order and Individual Notes
   const renderFundamental8 = () => {
-    const { downgradeFlags, modifyFlags } = getCategorizedRedFlags();
-    
+    const calculateF4Score = () => {
+      const scores = [
+        functional4.overheadSquat,
+        functional4.inlineLungeLeft,
+        functional4.inlineLungeRight,
+        functional4.hipHingeLeft,
+        functional4.hipHingeRight,
+        functional4.lateralLungeLeft,
+        functional4.lateralLungeRight
+      ];
+      return scores.reduce((sum, score) => sum + (parseInt(score) || 0), 0);
+    };
+
+    const f4Score = calculateF4Score();
+
     return (
-      <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
-        <h2 className="text-2xl font-bold mb-4 text-blue-800">Fundamental 8 Diagnostic Testing</h2>
-        
-        {isFundamental8Recommended() ? (
-          <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-amber-600" />
-              <div className="ml-3">
-                <div className="text-sm text-amber-800">
-                  <strong>Fundamental 8 Recommended:</strong> Low Functional 4 scores ({calculateF4Score()}/21) or red flags detected. 
-                  Use these tests to identify specific restrictions and guide corrective exercises.
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            Fundamental 8 Diagnostic Testing
+          </h2>
+          
+          {f4Score < 15 ? (
+            <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <div className="flex">
+                <AlertTriangle className="h-5 w-5 text-amber-600" />
+                <div className="ml-3">
+                  <div className="text-sm text-amber-800">
+                    <strong>Fundamental 8 Recommended:</strong> Low Functional 4 scores ({f4Score}/21) or red flags detected. 
+                    Use these tests to identify specific restrictions and guide corrective exercises.
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
-            <div className="flex">
-              <CheckCircle className="h-5 w-5 text-green-600" />
-              <div className="ml-3">
-                <div className="text-sm text-green-800">
-                  <strong>Fundamental 8 Optional:</strong> Good Functional 4 scores ({calculateF4Score()}/21) with no major red flags. 
-                  These tests are optional but can provide additional insights.
+          ) : (
+            <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+              <div className="flex">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <div className="ml-3">
+                  <div className="text-sm text-green-800">
+                    <strong>Fundamental 8 Optional:</strong> Good Functional 4 scores ({f4Score}/21) with no major red flags. 
+                    These tests are optional but can provide additional insights.
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}import React, { useState } from 'react';
+          )}
 
-<div className="space-y-6">
-  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-    <h2 className="text-xl font-bold mb-2">Fundamental 8 Diagnostic Tests</h2>
-    <p className="text-blue-800">
-      <strong>Priority-ordered diagnostic tests</strong> to identify specific restrictions and asymmetries. 
-      Use selectively when Functional 4 scores are low, restrictions observed, or previous injury reported.
-    </p>
-  </div>
+          <div className="space-y-6">
+            {/* 1. ASLR - RED */}
+            <div className="p-4 border-2 border-red-300 rounded-lg bg-red-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.aslr.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    aslr: {...prev.aslr, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-red-800">1. Active Straight Leg Raise (ASLR)</h3>
+              </div>
+              <p className="text-sm text-red-700 mb-3">Tests: Posterior chain flexibility (up leg), anterior hip tension (down leg), core stability</p>
+              
+              {fundamental8.aslr.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-red-700">Left Side</label>
+                    <select
+                      value={fundamental8.aslr.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        aslr: {...prev.aslr, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-red-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Heel past mid-thigh, clean movement</option>
+                      <option value="2">2 - Heel past knee level</option>
+                      <option value="1">1 - Can't reach past kneecap</option>
+                      <option value="0">0 - Pain or can't perform</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-red-700">Right Side</label>
+                    <select
+                      value={fundamental8.aslr.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        aslr: {...prev.aslr, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-red-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Heel past mid-thigh, clean movement</option>
+                      <option value="2">2 - Heel past knee level</option>
+                      <option value="1">1 - Can't reach past kneecap</option>
+                      <option value="0">0 - Pain or can't perform</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
 
-  {/* Test 1: ASLR (Red) */}
-  <div className="p-4 border-2 border-red-200 rounded-lg bg-red-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.aslr.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          aslr: {...prev.aslr, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">1. Active Straight Leg Raise (ASLR)</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Posterior chain flexibility (up leg), anterior hip tension (down leg), core stability
-    </p>
-    
-    {fundamental8.aslr.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.aslr.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                aslr: {...prev.aslr, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Heel past mid-thigh, clean movement, no compensations</option>
-              <option value="2">2 - Heel past knee level</option>
-              <option value="1">1 - Can't reach past kneecap</option>
-              <option value="0">0 - Pain or excessive knee bend in down leg</option>
-            </select>
+            {/* 2. FABER - ORANGE */}
+            <div className="p-4 border-2 border-orange-300 rounded-lg bg-orange-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.faber.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    faber: {...prev.faber, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-orange-800">2. FABER Test</h3>
+              </div>
+              <p className="text-sm text-orange-700 mb-3">Tests: Hip internal rotation mobility, hip flexor length</p>
+              
+              {fundamental8.faber.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-orange-700">Left Side</label>
+                    <select
+                      value={fundamental8.faber.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        faber: {...prev.faber, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-orange-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Knee touches table, no compensations</option>
+                      <option value="2">2 - Knee within 6cm of table</option>
+                      <option value="1">1 - Knee more than 6cm from table</option>
+                      <option value="0">0 - Pain or can't perform</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-orange-700">Right Side</label>
+                    <select
+                      value={fundamental8.faber.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        faber: {...prev.faber, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-orange-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Knee touches table, no compensations</option>
+                      <option value="2">2 - Knee within 6cm of table</option>
+                      <option value="1">1 - Knee more than 6cm from table</option>
+                      <option value="0">0 - Pain or can't perform</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3. HIP IR - YELLOW */}
+            <div className="p-4 border-2 border-yellow-300 rounded-lg bg-yellow-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.hipIR.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    hipIR: {...prev.hipIR, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-yellow-800">3. Hip Internal Rotation</h3>
+              </div>
+              <p className="text-sm text-yellow-700 mb-3">Tests: Hip internal rotation mobility in prone position</p>
+              
+              {fundamental8.hipIR.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-yellow-700">Left Side</label>
+                    <select
+                      value={fundamental8.hipIR.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        hipIR: {...prev.hipIR, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-yellow-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - 35°+ internal rotation</option>
+                      <option value="2">2 - 20-34° internal rotation</option>
+                      <option value="1">1 - 10-19° internal rotation</option>
+                      <option value="0">0 - Less than 10° or pain</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-yellow-700">Right Side</label>
+                    <select
+                      value={fundamental8.hipIR.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        hipIR: {...prev.hipIR, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-yellow-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - 35°+ internal rotation</option>
+                      <option value="2">2 - 20-34° internal rotation</option>
+                      <option value="1">1 - 10-19° internal rotation</option>
+                      <option value="0">0 - Less than 10° or pain</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 4. ANKLE MOBILITY - GREEN */}
+            <div className="p-4 border-2 border-green-300 rounded-lg bg-green-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.ankleMobility.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    ankleMobility: {...prev.ankleMobility, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-green-800">4. Ankle Dorsiflexion Mobility</h3>
+              </div>
+              <p className="text-sm text-green-700 mb-3">Tests: Ankle dorsiflexion range of motion</p>
+              
+              {fundamental8.ankleMobility.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-green-700">Left Side</label>
+                    <select
+                      value={fundamental8.ankleMobility.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        ankleMobility: {...prev.ankleMobility, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-green-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Knee past toes (13cm+)</option>
+                      <option value="2">2 - Knee to toes (10-12cm)</option>
+                      <option value="1">1 - Knee close to toes (5-9cm)</option>
+                      <option value="0">0 - Less than 5cm or pain</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-green-700">Right Side</label>
+                    <select
+                      value={fundamental8.ankleMobility.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        ankleMobility: {...prev.ankleMobility, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-green-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Knee past toes (13cm+)</option>
+                      <option value="2">2 - Knee to toes (10-12cm)</option>
+                      <option value="1">1 - Knee close to toes (5-9cm)</option>
+                      <option value="0">0 - Less than 5cm or pain</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5. SINGLE LEG BALANCE - BLUE */}
+            <div className="p-4 border-2 border-blue-300 rounded-lg bg-blue-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.singleLegBalance.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    singleLegBalance: {...prev.singleLegBalance, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-blue-800">5. Single Leg Balance</h3>
+              </div>
+              <p className="text-sm text-blue-700 mb-3">Tests: Dynamic balance and proprioception</p>
+              
+              {fundamental8.singleLegBalance.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-blue-700">Left Side</label>
+                    <select
+                      value={fundamental8.singleLegBalance.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        singleLegBalance: {...prev.singleLegBalance, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-blue-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Stable for 30+ seconds</option>
+                      <option value="2">2 - Stable for 15-29 seconds</option>
+                      <option value="1">1 - Stable for 5-14 seconds</option>
+                      <option value="0">0 - Less than 5 seconds or can't perform</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-blue-700">Right Side</label>
+                    <select
+                      value={fundamental8.singleLegBalance.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        singleLegBalance: {...prev.singleLegBalance, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-blue-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Stable for 30+ seconds</option>
+                      <option value="2">2 - Stable for 15-29 seconds</option>
+                      <option value="1">1 - Stable for 5-14 seconds</option>
+                      <option value="0">0 - Less than 5 seconds or can't perform</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 6. TRUNK STABILITY - INDIGO */}
+            <div className="p-4 border-2 border-indigo-300 rounded-lg bg-indigo-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.trunkStability.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    trunkStability: {...prev.trunkStability, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-indigo-800">6. Trunk Stability Push-up</h3>
+              </div>
+              <p className="text-sm text-indigo-700 mb-3">Tests: Core stability and body alignment during movement</p>
+              
+              {fundamental8.trunkStability.attempted && (
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-indigo-700">Score</label>
+                  <select
+                    value={fundamental8.trunkStability.score}
+                    onChange={(e) => setFundamental8(prev => ({
+                      ...prev, 
+                      trunkStability: {...prev.trunkStability, score: e.target.value}
+                    }))}
+                    className="w-full p-2 border border-indigo-300 rounded-md"
+                  >
+                    <option value="">Select score...</option>
+                    <option value="3">3 - Performs push-up from toes with straight body</option>
+                    <option value="2">2 - Performs push-up from knees with straight line</option>
+                    <option value="1">1 - Unable to perform one repetition</option>
+                    <option value="0">0 - Pain or cannot maintain position</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* 7. SHOULDER MOBILITY - PURPLE */}
+            <div className="p-4 border-2 border-purple-300 rounded-lg bg-purple-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.shoulderMobility.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    shoulderMobility: {...prev.shoulderMobility, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-purple-800">7. Shoulder Mobility</h3>
+              </div>
+              <p className="text-sm text-purple-700 mb-3">Tests: Shoulder and thoracic spine mobility</p>
+              
+              {fundamental8.shoulderMobility.attempted && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-purple-700">Left Hand Up</label>
+                    <select
+                      value={fundamental8.shoulderMobility.left}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        shoulderMobility: {...prev.shoulderMobility, left: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-purple-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Fists within one hand length</option>
+                      <option value="2">2 - Fists within 1.5 hand lengths</option>
+                      <option value="1">1 - Fists more than 1.5 hand lengths apart</option>
+                      <option value="0">0 - Cannot reach or pain</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1 text-purple-700">Right Hand Up</label>
+                    <select
+                      value={fundamental8.shoulderMobility.right}
+                      onChange={(e) => setFundamental8(prev => ({
+                        ...prev, 
+                        shoulderMobility: {...prev.shoulderMobility, right: e.target.value}
+                      }))}
+                      className="w-full p-2 border border-purple-300 rounded-md"
+                    >
+                      <option value="">Select score...</option>
+                      <option value="3">3 - Fists within one hand length</option>
+                      <option value="2">2 - Fists within 1.5 hand lengths</option>
+                      <option value="1">1 - Fists more than 1.5 hand lengths apart</option>
+                      <option value="0">0 - Cannot reach or pain</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 8. CRAWL POSITION - PINK */}
+            <div className="p-4 border-2 border-pink-300 rounded-lg bg-pink-50">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  checked={fundamental8.crawlPosition.attempted}
+                  onChange={(e) => setFundamental8(prev => ({
+                    ...prev, 
+                    crawlPosition: {...prev.crawlPosition, attempted: e.target.checked}
+                  }))}
+                  className="mr-2"
+                />
+                <h3 className="font-semibold text-lg text-pink-800">8. Crawl Position Hold</h3>
+              </div>
+              <p className="text-sm text-pink-700 mb-3">Tests: Integrated stability and coordination</p>
+              
+              {fundamental8.crawlPosition.attempted && (
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-pink-700">Score</label>
+                  <select
+                    value={fundamental8.crawlPosition.score}
+                    onChange={(e) => setFundamental8(prev => ({
+                      ...prev, 
+                      crawlPosition: {...prev.crawlPosition, score: e.target.value}
+                    }))}
+                    className="w-full p-2 border border-pink-300 rounded-md"
+                  >
+                    <option value="">Select score...</option>
+                    <option value="3">3 - Holds position 30+ seconds with good form</option>
+                    <option value="2">2 - Holds position 15-29 seconds</option>
+                    <option value="1">1 - Holds position 5-14 seconds</option>
+                    <option value="0">0 - Cannot hold for 5 seconds or pain</option>
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.aslr.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                aslr: {...prev.aslr, right: e.target.value}
+
+          {/* Observation Notes */}
+          <div className="mt-8">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Fundamental 8 Observations & Notes
+            </label>
+            <textarea
+              value={observationNotes.fundamental8}
+              onChange={(e) => setObservationNotes(prev => ({
+                ...prev,
+                fundamental8: e.target.value
               }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Heel past mid-thigh, clean movement, no compensations</option>
-              <option value="2">2 - Heel past knee level</option>
-              <option value="1">1 - Can't reach past kneecap</option>
-              <option value="0">0 - Pain or excessive knee bend in down leg</option>
-            </select>
+              rows={4}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              placeholder="Record any compensations, limitations, or important observations during the Fundamental 8 testing..."
+            />
           </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">ASLR Specific Notes</label>
-          <textarea
-            value={fundamental8.aslr.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              aslr: {...prev.aslr, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note restrictions, compensations, or observations..."
-          />
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={() => setCurrentStep(2)}
+              className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium transition-colors"
+            >
+              ← Back to Functional 4
+            </button>
+            <button
+              onClick={() => setCurrentStep(4)}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+            >
+              Continue to Strength Testing →
+            </button>
+          </div>
         </div>
       </div>
-    )}
-  </div>
-
-  {/* Test 2: Seated Faber (Orange) */}
-  <div className="p-4 border-2 border-orange-200 rounded-lg bg-orange-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.faber.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          faber: {...prev.faber, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">2. Seated Faber Test</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Hip external rotation, hip impingement, groin/adductor mobility
-    </p>
-    
-    {fundamental8.faber.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.faber.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                faber: {...prev.faber, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Knee reaches floor passively without tightness</option>
-              <option value="2">2 - Tightness reported with slight hover above floor</option>
-              <option value="1">1 - Knee 45° below horizontal, requiring force</option>
-              <option value="0">0 - Pain during movement</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.faber.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                faber: {...prev.faber, right: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Knee reaches floor passively without tightness</option>
-              <option value="2">2 - Tightness reported with slight hover above floor</option>
-              <option value="1">1 - Knee 45° below horizontal, requiring force</option>
-              <option value="0">0 - Pain during movement</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Seated Faber Specific Notes</label>
-          <textarea
-            value={fundamental8.faber.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              faber: {...prev.faber, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note impingement signs, muscle restrictions, asymmetries..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 3: Hip IR (Yellow) */}
-  <div className="p-4 border-2 border-yellow-200 rounded-lg bg-yellow-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.hipIR.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          hipIR: {...prev.hipIR, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">3. Box Hip Internal Rotation</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Hip internal rotation mobility (crucial for squatting mechanics)
-    </p>
-    
-    {fundamental8.hipIR.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.hipIR.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                hipIR: {...prev.hipIR, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - 30-40+ degrees of motion</option>
-              <option value="2">2 - 20-30 degrees</option>
-              <option value="1">1 - 5-10 degrees (significant restriction)</option>
-              <option value="0">0 - Less than 5° with pain</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.hipIR.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                hipIR: {...prev.hipIR, right: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - 30-40+ degrees of motion</option>
-              <option value="2">2 - 20-30 degrees</option>
-              <option value="1">1 - 5-10 degrees (significant restriction)</option>
-              <option value="0">0 - Less than 5° with pain</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Hip IR Specific Notes</label>
-          <textarea
-            value={fundamental8.hipIR.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              hipIR: {...prev.hipIR, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note end feel, compensations, bilateral differences..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 4: Ankle Mobility (Green) */}
-  <div className="p-4 border-2 border-green-200 rounded-lg bg-green-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.ankleMobility.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          ankleMobility: {...prev.ankleMobility, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">4. Ankle Mobility Wall Test</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Ankle dorsiflexion mobility (essential for squatting and lunging)
-    </p>
-    
-    {fundamental8.ankleMobility.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.ankleMobility.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                ankleMobility: {...prev.ankleMobility, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Excellent mobility, knee well past toes</option>
-              <option value="2">2 - Good mobility, knee reaches toes</option>
-              <option value="1">1 - Limited mobility, knee short of toes</option>
-              <option value="0">0 - Pain or severe restriction</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.ankleMobility.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                ankleMobility: {...prev.ankleMobility, right: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Excellent mobility, knee well past toes</option>
-              <option value="2">2 - Good mobility, knee reaches toes</option>
-              <option value="1">1 - Limited mobility, knee short of toes</option>
-              <option value="0">0 - Pain or severe restriction</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Ankle Mobility Specific Notes</label>
-          <textarea
-            value={fundamental8.ankleMobility.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              ankleMobility: {...prev.ankleMobility, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note restrictions, calf tightness, heel lifting..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 5: Trunk Stability (Blue) */}
-  <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.trunkStability.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          trunkStability: {...prev.trunkStability, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">5. Trunk Stability Push Up</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Core stability, upper body strength during stabilization
-    </p>
-    
-    {fundamental8.trunkStability.attempted && (
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Score</label>
-          <select
-            value={fundamental8.trunkStability.score}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              trunkStability: {...prev.trunkStability, score: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-          >
-            <option value="">Select score...</option>
-            <option value="3">3 - Complete push up from toes, straight body</option>
-            <option value="2">2 - Complete push up from knees, straight body</option>
-            <option value="1">1 - Cannot complete push up, maintains straight body</option>
-            <option value="0">0 - Pain or cannot maintain straight body</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Trunk Stability Specific Notes</label>
-          <textarea
-            value={fundamental8.trunkStability.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              trunkStability: {...prev.trunkStability, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note compensations, core stability, body alignment..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 6: Single Leg Balance (Purple) */}
-  <div className="p-4 border-2 border-purple-200 rounded-lg bg-purple-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.singleLegBalance.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          singleLegBalance: {...prev.singleLegBalance, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">6. Single Leg Balance Test</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Proprioception, single leg stability
-    </p>
-    
-    {fundamental8.singleLegBalance.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.singleLegBalance.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                singleLegBalance: {...prev.singleLegBalance, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Stable for 30+ seconds, minimal adjustments</option>
-              <option value="2">2 - Stable for 15-30 seconds with minor adjustments</option>
-              <option value="1">1 - Wobbly but maintains balance</option>
-              <option value="0">0 - Pain or cannot maintain balance</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.singleLegBalance.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                singleLegBalance: {...prev.singleLegBalance, right: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Stable for 30+ seconds, minimal adjustments</option>
-              <option value="2">2 - Stable for 15-30 seconds with minor adjustments</option>
-              <option value="1">1 - Wobbly but maintains balance</option>
-              <option value="0">0 - Pain or cannot maintain balance</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Single Leg Balance Specific Notes</label>
-          <textarea
-            value={fundamental8.singleLegBalance.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              singleLegBalance: {...prev.singleLegBalance, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note balance strategies, wobbling patterns, asymmetries..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 7: Shoulder Mobility (Indigo) */}
-  <div className="p-4 border-2 border-indigo-200 rounded-lg bg-indigo-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.shoulderMobility.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          shoulderMobility: {...prev.shoulderMobility, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">7. Apley's Scratch Test</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Shoulder mobility in multiple planes, overhead reaching capability
-    </p>
-    
-    {fundamental8.shoulderMobility.attempted && (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Left Side</label>
-            <select
-              value={fundamental8.shoulderMobility.left}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                shoulderMobility: {...prev.shoulderMobility, left: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Hands can overlap by one fist distance</option>
-              <option value="2">2 - Fingertips can touch</option>
-              <option value="1">1 - Hands reach posterior to body but don't touch</option>
-              <option value="0">0 - Pain or inability to reach behind back</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Right Side</label>
-            <select
-              value={fundamental8.shoulderMobility.right}
-              onChange={(e) => setFundamental8(prev => ({
-                ...prev, 
-                shoulderMobility: {...prev.shoulderMobility, right: e.target.value}
-              }))}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select score...</option>
-              <option value="3">3 - Hands can overlap by one fist distance</option>
-              <option value="2">2 - Fingertips can touch</option>
-              <option value="1">1 - Hands reach posterior to body but don't touch</option>
-              <option value="0">0 - Pain or inability to reach behind back</option>
-            </select>
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Shoulder Mobility Specific Notes</label>
-          <textarea
-            value={fundamental8.shoulderMobility.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              shoulderMobility: {...prev.shoulderMobility, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note limited reach, compensations, pain location, asymmetries..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Test 8: Crawl Position (Gray) */}
-  <div className="p-4 border-2 border-gray-200 rounded-lg bg-gray-50">
-    <div className="flex items-center mb-3">
-      <input
-        type="checkbox"
-        checked={fundamental8.crawlPosition.attempted}
-        onChange={(e) => setFundamental8(prev => ({
-          ...prev, 
-          crawlPosition: {...prev.crawlPosition, attempted: e.target.checked}
-        }))}
-        className="mr-2"
-      />
-      <h3 className="font-semibold text-lg">8. Crawl Position Test</h3>
-    </div>
-    <p className="text-sm text-gray-600 mb-3">
-      Tests: Total body stability and coordination
-    </p>
-    
-    {fundamental8.crawlPosition.attempted && (
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Score</label>
-          <select
-            value={fundamental8.crawlPosition.score}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              crawlPosition: {...prev.crawlPosition, score: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-          >
-            <option value="">Select score...</option>
-            <option value="3">3 - Perfect stability, coordinated movement</option>
-            <option value="2">2 - Good stability with minor compensations</option>
-            <option value="1">1 - Unstable but can maintain position briefly</option>
-            <option value="0">0 - Pain or cannot maintain position</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Crawl Position Specific Notes</label>
-          <textarea
-            value={fundamental8.crawlPosition.notes}
-            onChange={(e) => setFundamental8(prev => ({
-              ...prev, 
-              crawlPosition: {...prev.crawlPosition, notes: e.target.value}
-            }))}
-            className="w-full p-2 border rounded-md"
-            rows="2"
-            placeholder="Note stability, coordination, compensations..."
-          />
-        </div>
-      </div>
-    )}
-  </div>
-
-  {/* Overall F8 Summary */}
-  <div className="bg-gray-50 border rounded-lg p-4">
-    <h3 className="font-semibold text-lg mb-3">Overall Fundamental 8 Summary</h3>
-    <textarea
-      value={fundamental8.overallNotes}
-      onChange={(e) => setFundamental8(prev => ({
-        ...prev, 
-        overallNotes: e.target.value
-      }))}
-      className="w-full p-3 border rounded-md"
-      rows="3"
-      placeholder="Overall patterns observed, key restrictions identified, clinical significance, recommended focus areas..."
-    />
-  </div>
-
-  {/* Summary Stats */}
-  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-    <h3 className="font-semibold mb-2">Fundamental 8 Summary</h3>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-      <div>
-        <span className="font-medium">Tests Completed:</span>
-        <p>{Object.values(fundamental8).filter(test => test.attempted).length}/8</p>
-      </div>
-      <div>
-        <span className="font-medium">High Priority Done:</span>
-        <p>{[fundamental8.aslr, fundamental8.faber, fundamental8.hipIR].filter(test => test.attempted).length}/3</p>
-      </div>
-      <div>
-        <span className="font-medium">Bilateral Tests:</span>
-        <p>ASLR, Faber, Hip IR, Ankle, Balance, Shoulder</p>
-      </div>
-      <div>
-        <span className="font-medium">Unilateral Tests:</span>
-        <p>Trunk Stability, Crawl</p>
-      </div>
-    </div>
-  </div>
-</div>
-
+    );
+  };
   // Strength Testing Section (same as before)
   const renderStrengthTesting = () => (
     <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
