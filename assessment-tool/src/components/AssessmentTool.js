@@ -512,22 +512,7 @@ if (Object.values(parqResponses).some(response => response.answer === true)) {  
 
   // PAR-Q Section
  // PAR-Q Responses (13 questions) with detail fields + medical clearance
-  const [parqResponses, setParqResponses] = useState({
-    chronicIllness: { answer: null, details: '' },
-    medications: { answer: null, details: '' },
-    surgeriesHospital: { answer: null, details: '' },
-    jointBoneIssues: { answer: null, details: '' },
-    chestPainActivity: { answer: null, details: '' },
-    chestPainRest: { answer: null, details: '' },
-    dizzinessBalance: { answer: null, details: '' },
-    bloodPressureCholesterol: { answer: null, details: '' },
-    smoking: { answer: null, details: '' },
-    familyHeartHistory: { answer: null, details: '' },
-    otherReasons: { answer: null, details: '' },
-    over69Unaccustomed: { answer: null, details: '' },
-    pregnant: { answer: null, details: '' },
-    medicalClearance: { answer: null, details: '' }
-  });
+  
 
   // PAR-Q Section
   const renderPARQ = () => {
