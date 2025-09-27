@@ -1995,7 +1995,8 @@ if (Object.values(parqResponses).some(response => response.answer === true)) {  
           <div className="p-4 text-center bg-purple-50 rounded-lg">
             <h3 className="font-semibold text-gray-700">PAR-Q</h3>
             <p className="text-lg font-bold text-purple-600">
-{Object.values(parqResponses).some(r => r.answer === true) ? 'REFER' : 'CLEAR'}            <p className="text-sm text-gray-500">Medical status</p>
+{Object.values(parqResponses).some(r => r.answer === true) ? 'REFER' : 'CLEAR'} </p>
+          <p className="text-sm text-gray-500">Medical status</p>
           </div>
         </div>
 
