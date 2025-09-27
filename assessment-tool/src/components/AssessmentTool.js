@@ -32,22 +32,23 @@ const AssessmentTool = () => {
     clientType: ''
   });
 
-  // PAR-Q Responses (13 questions)
-  const [parqResponses, setParqResponses] = useState({
-    chronicIllness: null,
-    medications: null,
-    surgeriesHospital: null,
-    jointBoneIssues: null,
-    chestPainActivity: null,
-    chestPainRest: null,
-    dizzinessBalance: null,
-    bloodPressureCholesterol: null,
-    smoking: null,
-    familyHeartHistory: null,
-    otherReasons: null,
-    over69Unaccustomed: null,
-    pregnant: null
-  });
+  // PAR-Q Responses (13 questions) with detail fields + medical clearance
+const [parqResponses, setParqResponses] = useState({
+  chronicIllness: { answer: null, details: '' },
+  medications: { answer: null, details: '' },
+  surgeriesHospital: { answer: null, details: '' },
+  jointBoneIssues: { answer: null, details: '' },
+  chestPainActivity: { answer: null, details: '' },
+  chestPainRest: { answer: null, details: '' },
+  dizzinessBalance: { answer: null, details: '' },
+  bloodPressureCholesterol: { answer: null, details: '' },
+  smoking: { answer: null, details: '' },
+  familyHeartHistory: { answer: null, details: '' },
+  otherReasons: { answer: null, details: '' },
+  over69Unaccustomed: { answer: null, details: '' },
+  pregnant: { answer: null, details: '' },
+  medicalClearance: { answer: null, details: '' }
+});
 
   // Functional 4 Test Scores
   const [functional4, setFunctional4] = useState({
@@ -175,8 +176,7 @@ const AssessmentTool = () => {
     const monitorFlags = [];
 
     // PAR-Q flags
-    if (Object.values(parqResponses).some(response => response === true)) {
-      modifyFlags.push('Medical clearance required (PAR-Q positive responses)');
+if (Object.values(parqResponses).some(response => response.answer === true)) {      modifyFlags.push('Medical clearance required (PAR-Q positive responses)');
     }
 
     // Current injury concerns
@@ -332,7 +332,7 @@ const AssessmentTool = () => {
       // Helper function to summarize PAR-Q
       const summarizePARQ = () => {
         const yesResponses = Object.entries(parqResponses)
-          .filter(([, response]) => response === true)
+          .filter(([, response]) => response.answer === true)
           .map(([key]) => key);
 
         const medicalClearance = yesResponses.length > 0;
@@ -511,129 +511,268 @@ const AssessmentTool = () => {
   };
 
   // PAR-Q Section
-  const renderPARQ = () => (
-    <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
-      <h2 className="text-2xl font-bold mb-4 text-blue-800">Pre-Exercise Questionnaire (PAR-Q)</h2>
-      <p className="mb-6 text-gray-600">
-        Please answer all questions honestly. This screening helps ensure your safety during assessment and training.
-      </p>
+ // PAR-Q Responses (13 questions) with detail fields + medical clearance
+  const [parqResponses, setParqResponses] = useState({
+    chronicIllness: { answer: null, details: '' },
+    medications: { answer: null, details: '' },
+    surgeriesHospital: { answer: null, details: '' },
+    jointBoneIssues: { answer: null, details: '' },
+    chestPainActivity: { answer: null, details: '' },
+    chestPainRest: { answer: null, details: '' },
+    dizzinessBalance: { answer: null, details: '' },
+    bloodPressureCholesterol: { answer: null, details: '' },
+    smoking: { answer: null, details: '' },
+    familyHeartHistory: { answer: null, details: '' },
+    otherReasons: { answer: null, details: '' },
+    over69Unaccustomed: { answer: null, details: '' },
+    pregnant: { answer: null, details: '' },
+    medicalClearance: { answer: null, details: '' }
+  });
 
-      <div className="space-y-4">
-        {[
-          {
-            key: 'chronicIllness',
-            question: 'Do you have any chronic illnesses or conditions (e.g., diabetes, heart disease, hypertension)?'
-          },
-          {
-            key: 'medications',
-            question: 'Are you currently taking any medications?'
-          },
-          {
-            key: 'surgeriesHospital',
-            question: 'Have you had any surgeries or hospital stays in the past year?'
-          },
-          {
-            key: 'jointBoneIssues',
-            question: 'Do you have any joint or bone issues that could be affected by exercise (e.g., arthritis, osteoporosis)?'
-          },
-          {
-            key: 'chestPainActivity',
-            question: 'Do you experience chest pain or discomfort during physical activity?'
-          },
-          {
-            key: 'chestPainRest',
-            question: 'Have you experienced chest pain or discomfort in the past month while not engaged in physical activity?'
-          },
-          {
-            key: 'dizzinessBalance',
-            question: 'Do you lose your balance because of dizziness, or do you ever lose consciousness?'
-          },
-          {
-            key: 'bloodPressureCholesterol',
-            question: 'Do you have high blood pressure or high cholesterol?'
-          },
-          {
-            key: 'smoking',
-            question: 'Are you currently a smoker, or have you quit smoking within the past six months?'
-          },
-          {
-            key: 'familyHeartHistory',
-            question: 'Do you have a family history of heart disease before age 55 in male relatives or age 65 in female relatives?'
-          },
-          {
-            key: 'otherReasons',
-            question: 'Do you know of any other reason why you should not engage in physical activity?'
-          },
-          {
-            key: 'over69Unaccustomed',
-            question: 'If you are over the age of 69, are you unaccustomed to vigorous exercise?'
-          },
-          {
-            key: 'pregnant',
-            question: 'Are you pregnant, or is there a chance you might be pregnant?'
-          }
-        ].map((item, index) => (
-          <div key={item.key} className="p-4 border rounded-lg hover:border-blue-300 transition-colors">
-            <div className="flex items-start space-x-3">
-              <span className="text-sm font-medium text-gray-500 mt-1 bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center">{index + 1}</span>
-              <div className="flex-1">
-                <p className="text-sm mb-3 text-gray-700">{item.question}</p>
-                <div className="flex space-x-6">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name={item.key}
-                      checked={parqResponses[item.key] === false}
-                      onChange={() => setParqResponses(prev => ({...prev, [item.key]: false}))}
-                      className="mr-2 text-green-600"
+  // PAR-Q Section
+  const renderPARQ = () => {
+    const needsMedicalClearance = Object.entries(parqResponses)
+      .filter(([key]) => key !== 'medicalClearance')
+      .some(([, response]) => response.answer === true);
+
+    const questions = [
+      {
+        key: 'chronicIllness',
+        question: 'Do you have any chronic illnesses or conditions (e.g., diabetes, heart disease, hypertension)?',
+        placeholder: 'Please specify conditions (e.g., Type 2 diabetes, hypertension, heart disease...)'
+      },
+      {
+        key: 'medications',
+        question: 'Are you currently taking any medications?',
+        placeholder: 'Please list medications and dosages (e.g., Lisinopril 10mg daily, Metformin 500mg twice daily...)'
+      },
+      {
+        key: 'surgeriesHospital',
+        question: 'Have you had any surgeries or hospital stays in the past year?',
+        placeholder: 'Please describe surgeries or hospital stays and dates...'
+      },
+      {
+        key: 'jointBoneIssues',
+        question: 'Do you have any joint or bone issues that could be affected by exercise (e.g., arthritis, osteoporosis)?',
+        placeholder: 'Please specify joint or bone conditions and affected areas...'
+      },
+      {
+        key: 'chestPainActivity',
+        question: 'Do you experience chest pain or discomfort during physical activity?',
+        placeholder: 'Please describe the type of pain and when it occurs...'
+      },
+      {
+        key: 'chestPainRest',
+        question: 'Have you experienced chest pain or discomfort in the past month while not engaged in physical activity?',
+        placeholder: 'Please describe the chest pain or discomfort...'
+      },
+      {
+        key: 'dizzinessBalance',
+        question: 'Do you lose your balance because of dizziness, or do you ever lose consciousness?',
+        placeholder: 'Please describe episodes of dizziness or loss of consciousness...'
+      },
+      {
+        key: 'bloodPressureCholesterol',
+        question: 'Do you have high blood pressure or high cholesterol?',
+        placeholder: 'Please specify condition and any current readings if known...'
+      },
+      {
+        key: 'smoking',
+        question: 'Are you currently a smoker, or have you quit smoking within the past six months?',
+        placeholder: 'Please specify smoking status and frequency or quit date...'
+      },
+      {
+        key: 'familyHeartHistory',
+        question: 'Do you have a family history of heart disease before age 55 in male relatives or age 65 in female relatives?',
+        placeholder: 'Please specify family member relationship and condition...'
+      },
+      {
+        key: 'otherReasons',
+        question: 'Do you know of any other reason why you should not engage in physical activity?',
+        placeholder: 'Please describe any other medical concerns or restrictions...'
+      },
+      {
+        key: 'over69Unaccustomed',
+        question: 'If you are over the age of 69, are you unaccustomed to vigorous exercise?',
+        placeholder: 'Please describe your current activity level...'
+      },
+      {
+        key: 'pregnant',
+        question: 'Are you pregnant, or is there a chance you might be pregnant?',
+        placeholder: 'Please provide details about pregnancy stage or concerns...'
+      }
+    ];
+
+    return (
+      <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
+        <h2 className="text-2xl font-bold mb-4 text-blue-800">Pre-Exercise Questionnaire (PAR-Q)</h2>
+        <p className="mb-6 text-gray-600">
+          Please answer all questions honestly. This screening helps ensure your safety during assessment and training.
+        </p>
+
+        <div className="space-y-4">
+          {questions.map((item, index) => (
+            <div key={item.key} className="p-4 border rounded-lg hover:border-blue-300 transition-colors">
+              <div className="flex items-start space-x-3">
+                <span className="text-sm font-medium text-gray-500 mt-1 bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center">{index + 1}</span>
+                <div className="flex-1">
+                  <p className="text-sm mb-3 text-gray-700">{item.question}</p>
+                  <div className="flex space-x-6 mb-3">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name={item.key}
+                        checked={parqResponses[item.key].answer === false}
+                        onChange={() => setParqResponses(prev => ({
+                          ...prev, 
+                          [item.key]: { answer: false, details: '' }
+                        }))}
+                        className="mr-2 text-green-600"
+                      />
+                      <span className="text-sm font-medium text-green-600">NO</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name={item.key}
+                        checked={parqResponses[item.key].answer === true}
+                        onChange={() => setParqResponses(prev => ({
+                          ...prev, 
+                          [item.key]: { answer: true, details: prev[item.key].details }
+                        }))}
+                        className="mr-2 text-red-600"
+                      />
+                      <span className="text-sm font-medium text-red-600">YES</span>
+                    </label>
+                  </div>
+                  
+                  {/* Conditional detail input */}
+                  {parqResponses[item.key].answer === true && (
+                    <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                      <label className="block text-xs font-medium text-amber-800 mb-1">
+                        Please provide details:
+                      </label>
+                      <textarea
+                        value={parqResponses[item.key].details}
+                        onChange={(e) => setParqResponses(prev => ({
+                          ...prev, 
+                          [item.key]: { ...prev[item.key], details: e.target.value }
+                        }))}
+                        className="w-full p-2 border border-amber-300 rounded-md focus:ring-2 focus:ring-amber-500 text-sm"
+                        rows="2"
+                        placeholder={item.placeholder}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Medical Clearance Question - appears conditionally */}
+        {needsMedicalClearance && (
+          <div className="mt-6">
+            <div className="p-4 border-2 border-red-300 rounded-lg bg-red-50">
+              <div className="flex items-start space-x-3">
+                <span className="text-sm font-medium text-red-700 mt-1 bg-red-200 rounded-full w-6 h-6 flex items-center justify-center">
+                  !
+                </span>
+                <div className="flex-1">
+                  <p className="text-sm mb-3 text-red-800 font-medium">
+                    Based on your responses above, you may need medical clearance. Have you obtained clearance from your doctor to participate in physical activity and exercise?
+                  </p>
+                  <div className="flex space-x-6 mb-3">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="medicalClearance"
+                        checked={parqResponses.medicalClearance.answer === true}
+                        onChange={() => setParqResponses(prev => ({
+                          ...prev, 
+                          medicalClearance: { answer: true, details: prev.medicalClearance.details }
+                        }))}
+                        className="mr-2 text-green-600"
+                      />
+                      <span className="text-sm font-medium text-green-600">YES - I have medical clearance</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="medicalClearance"
+                        checked={parqResponses.medicalClearance.answer === false}
+                        onChange={() => setParqResponses(prev => ({
+                          ...prev, 
+                          medicalClearance: { answer: false, details: prev.medicalClearance.details }
+                        }))}
+                        className="mr-2 text-red-600"
+                      />
+                      <span className="text-sm font-medium text-red-600">NO - I do not have clearance</span>
+                    </label>
+                  </div>
+                  
+                  {/* Detail field for medical clearance */}
+                  <div className="mt-3 p-3 bg-red-100 border border-red-300 rounded-md">
+                    <label className="block text-xs font-medium text-red-800 mb-1">
+                      Please provide clearance details:
+                    </label>
+                    <textarea
+                      value={parqResponses.medicalClearance.details}
+                      onChange={(e) => setParqResponses(prev => ({
+                        ...prev, 
+                        medicalClearance: { ...prev.medicalClearance, details: e.target.value }
+                      }))}
+                      className="w-full p-2 border border-red-400 rounded-md focus:ring-2 focus:ring-red-500 text-sm"
+                      rows="2"
+                      placeholder='Please provide details of your medical clearance (e.g., "Cleared by Dr. Smith on 15/09/2025 for moderate exercise" or "No clearance obtained yet")...'
                     />
-                    <span className="text-sm font-medium text-green-600">NO</span>
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name={item.key}
-                      checked={parqResponses[item.key] === true}
-                      onChange={() => setParqResponses(prev => ({...prev, [item.key]: true}))}
-                      className="mr-2 text-red-600"
-                    />
-                    <span className="text-sm font-medium text-red-600">YES</span>
-                  </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        )}
 
-      {Object.values(parqResponses).some(response => response === true) && (
-        <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <div className="flex">
-            <AlertTriangle className="h-5 w-5 text-amber-600" />
-            <div className="ml-3">
-              <div className="text-sm text-amber-800">
-                <strong>Medical Clearance Required:</strong> One or more YES answers indicate you should 
-                consult with your doctor before increasing physical activity. We may need to modify your 
-                assessment or require medical clearance before proceeding with training.
+        {/* Warning based on medical clearance */}
+        {needsMedicalClearance && parqResponses.medicalClearance.answer === false && (
+          <div className="mt-6 rounded-lg border border-red-200 bg-red-50 p-4">
+            <div className="flex">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <div className="ml-3">
+                <div className="text-sm text-red-800">
+                  <strong>Assessment Cannot Proceed:</strong> Medical clearance is required before we can continue with physical testing. Please obtain clearance from your healthcare provider first.
+                </div>
               </div>
             </div>
           </div>
+        )}
+
+        {needsMedicalClearance && parqResponses.medicalClearance.answer === true && (
+          <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4">
+            <div className="flex">
+              <AlertTriangle className="h-5 w-5 text-green-600" />
+              <div className="ml-3">
+                <div className="text-sm text-green-800">
+                  <strong>Medical Clearance Confirmed:</strong> Thank you for obtaining medical clearance. We can proceed with the assessment with appropriate modifications.
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-8 flex justify-between">
+          <div></div>
+          <button
+            onClick={() => setCurrentStep(1)}
+            disabled={Object.values(parqResponses).some(response => response.answer === null)}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+          >
+            Continue to Client Information
+          </button>
         </div>
-      )}
-
-      <div className="mt-8 flex justify-between">
-        <div></div>
-        <button
-          onClick={() => setCurrentStep(1)}
-          disabled={Object.values(parqResponses).some(response => response === null)}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
-        >
-          Continue to Client Information
-        </button>
       </div>
-    </div>
-  );
-
+    );
+  };
   // Enhanced Client Information Section
   const renderClientInfo = () => (
     <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
@@ -1871,9 +2010,7 @@ const AssessmentTool = () => {
           <div className="p-4 text-center bg-purple-50 rounded-lg">
             <h3 className="font-semibold text-gray-700">PAR-Q</h3>
             <p className="text-lg font-bold text-purple-600">
-              {Object.values(parqResponses).some(r => r === true) ? 'REFER' : 'CLEAR'}
-            </p>
-            <p className="text-sm text-gray-500">Medical status</p>
+{Object.values(parqResponses).some(r => r.answer === true) ? 'REFER' : 'CLEAR'}            <p className="text-sm text-gray-500">Medical status</p>
           </div>
         </div>
 
@@ -2132,11 +2269,22 @@ const AssessmentTool = () => {
                 goal1: '', goal2: '', goal3: '', goal4: '', goal5: '',
                 sportingBackground: '', injuryHistory: '', currentInjuryConcerns: '', clientType: '' 
               });
-              setParqResponses({
-                chronicIllness: null, medications: null, surgeriesHospital: null, jointBoneIssues: null,
-                chestPainActivity: null, chestPainRest: null, dizzinessBalance: null, bloodPressureCholesterol: null,
-                smoking: null, familyHeartHistory: null, otherReasons: null, over69Unaccustomed: null, pregnant: null
-              });
+setParqResponses({
+  chronicIllness: { answer: null, details: '' }, 
+  medications: { answer: null, details: '' }, 
+  surgeriesHospital: { answer: null, details: '' }, 
+  jointBoneIssues: { answer: null, details: '' },
+  chestPainActivity: { answer: null, details: '' }, 
+  chestPainRest: { answer: null, details: '' }, 
+  dizzinessBalance: { answer: null, details: '' }, 
+  bloodPressureCholesterol: { answer: null, details: '' },
+  smoking: { answer: null, details: '' }, 
+  familyHeartHistory: { answer: null, details: '' }, 
+  otherReasons: { answer: null, details: '' }, 
+  over69Unaccustomed: { answer: null, details: '' }, 
+  pregnant: { answer: null, details: '' },
+  medicalClearance: { answer: null, details: '' }
+});
               setFunctional4({
                 overheadSquat: '', inlineLungeLeft: '', inlineLungeRight: '',
                 hipHingeLeft: '', hipHingeRight: '', lateralLungeLeft: '', lateralLungeRight: ''
