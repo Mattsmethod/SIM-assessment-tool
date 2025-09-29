@@ -151,23 +151,28 @@ const [parqResponses, setParqResponses] = useState({
     return 1;
   };
 
-  const getStrengthLevel = () => {
-    if (!strengthTests.level1.attempted) return 0;
-
-    const level1Pass = Object.entries(strengthTests.level1)
-      .filter(([key]) => key !== 'attempted')
-      .every(([, passed]) => passed);
-
-    if (!level1Pass) return 1;
-
-    if (!strengthTests.level2.attempted) return 1;
-
+const getStrengthLevel = () => {
+  // Check Level 2 first (independent of Level 1)
+  if (strengthTests.level2.attempted) {
     const level2Pass = Object.entries(strengthTests.level2)
       .filter(([key]) => key !== 'attempted')
       .every(([, passed]) => passed);
+    
+    if (level2Pass) return 2; // Passed all Level 2 tests
+  }
 
-    return level2Pass ? 2 : 1;
-  };
+  // Check Level 1
+  if (strengthTests.level1.attempted) {
+    const level1Pass = Object.entries(strengthTests.level1)
+      .filter(([key]) => key !== 'attempted')
+      .every(([, passed]) => passed);
+    
+    return level1Pass ? 1 : 1; // Attempted Level 1, return 1 either way
+  }
+
+  // Neither level attempted
+  return 0;
+};
 
   // Enhanced Red Flag Categorization
   const getCategorizedRedFlags = () => {
