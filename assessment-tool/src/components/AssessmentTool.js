@@ -1883,12 +1883,9 @@ if (Object.values(parqResponses).some(response => response.answer === true)) {  
                 level2: { ...prev.level2, attempted: e.target.checked }
               }))}
               className="mr-2"
-              disabled={!strengthTests.level1.attempted || !Object.entries(strengthTests.level1).filter(([key]) => key !== 'attempted').every(([, passed]) => passed)}
             />
             <span className="font-medium">Attempted Level 2 Testing</span>
-            {(!strengthTests.level1.attempted || !Object.entries(strengthTests.level1).filter(([key]) => key !== 'attempted').every(([, passed]) => passed)) && (
-              <span className="text-sm text-gray-500 ml-2">(Must pass all Level 1 tests first)</span>
-            )}
+
           </label>
         </div>
 
