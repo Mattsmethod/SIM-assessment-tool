@@ -749,8 +749,12 @@ if (Object.values(parqResponses).some(response => response.answer === true)) {  
           <div></div>
           <button
             onClick={() => setCurrentStep(1)}
-            disabled={Object.values(parqResponses).some(response => response.answer === null)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+disabled={
+  Object.entries(parqResponses)
+    .filter(([key]) => key !== 'medicalClearance')
+    .some(([, response]) => response.answer === null) ||
+  (needsMedicalClearance && parqResponses.medicalClearance.answer === null)
+}            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
           >
             Continue to Client Information
           </button>
