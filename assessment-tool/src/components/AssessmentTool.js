@@ -134,6 +134,7 @@ const [parqResponses, setParqResponses] = useState({
     'Graduation',
     'Graduation (IRM Modified)',
     'Squad',
+    'Squad+',
     'Squad (IRM Modified)'
   ];
 
@@ -491,7 +492,8 @@ if (Object.values(parqResponses).some(response => response.answer === true)) {  
         fundamental8Recommended: isFundamental8Recommended(),
         currentInjuryFlag: !!(clientInfo.currentInjuryConcerns && clientInfo.currentInjuryConcerns.trim()),
         totalRedFlags: downgradeFlags.length + modifyFlags.length + monitorFlags.length,
-        assessmentCompleteFlag: true
+        assessmentCompleteFlag: true,
+        clientType: clientInfo.clientType || 'Not specified'
       };
 
       const response = await fetch('https://sim-assessment-tool.onrender.com/export', {
@@ -931,10 +933,10 @@ disabled={
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select client type...</option>
-            <option value="IRM">IRM - Injury Recovery/Management (Any age, pain-free focus)</option>
-            <option value="AP">AP - Athletic Performance (15-35 years, performance focus)</option>
-            <option value="AL">AL - Athletic for Life (40+ athletes, high level maintenance)</option>
-            <option value="RL">RL - Resilience & Longevity (40+ clients, strength & health focus)</option>
+<option value="IRM - INJURY RECOVERY/MANAGEMENT">IRM - Injury Recovery/Management (Any age, pain-free focus)</option>
+<option value="AP - ATHLETIC PERFORMANCE">AP - Athletic Performance (15-35 years, performance focus)</option>
+<option value="AL - ATHLETIC FOR LIFE">AL - Athletic for Life (40+ athletes, high level maintenance)</option>
+<option value="RL - RESILIENCE & LONGEVITY">RL - Resilience & Longevity (40+ clients, strength & health focus)</option>
           </select>
         </div>
       </div>
