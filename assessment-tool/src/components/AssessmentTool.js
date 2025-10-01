@@ -219,7 +219,7 @@ const getCategorizedRedFlags = () => {
     }
   });
 
-  return { downgradeFlags, modifyFlags };
+return { downgradeFlags, modifyFlags, monitorFlags: [] };
 };
 
   // Refined Program Logic
