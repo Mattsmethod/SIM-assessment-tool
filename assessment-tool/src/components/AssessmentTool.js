@@ -221,7 +221,6 @@ const getCategorizedRedFlags = () => {
 
   return { downgradeFlags, modifyFlags };
 };
-  };
 
   // Refined Program Logic
   const getSystemProgramRecommendation = () => {
