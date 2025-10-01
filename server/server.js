@@ -72,12 +72,13 @@ app.post('/export', async (req, res) => {
       data.fundamental8Recommended,      // V22
       data.currentInjuryFlag,            // W23
       data.totalRedFlags,                // X24
-      data.assessmentCompleteFlag        // Y25
+      data.assessmentCompleteFlag,        // Y25
+      data.clientType  // Z26
     ];
     
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:Y',  // Updated range for 25 columns
+      range: 'Sheet1!A:Z',  // Updated range for 26 columns
       valueInputOption: 'RAW',
       resource: {
         values: [row]
