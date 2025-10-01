@@ -176,60 +176,51 @@ const getStrengthLevel = () => {
 };
 
   // Enhanced Red Flag Categorization
-  const getCategorizedRedFlags = () => {
-    const downgradeFlags = [];
-    const modifyFlags = [];
-    const monitorFlags = [];
+// Simplified Red Flag Categorization
+const getCategorizedRedFlags = () => {
+  const downgradeFlags = [];
+  const modifyFlags = [];
 
-    // PAR-Q flags
-if (Object.values(parqResponses).some(response => response.answer === true)) {      modifyFlags.push('Medical clearance required (PAR-Q positive responses)');
+  // Current injury concerns
+  if (clientInfo.currentInjuryConcerns && clientInfo.currentInjuryConcerns.trim()) {
+    modifyFlags.push('Current injury concerns reported');
+  }
+
+  // F4 score flags
+  const scores = Object.values(functional4).map(score => parseInt(score) || 0);
+
+  // Downgrade flags (force to Foundations)
+  if (scores.some(score => score === 0)) {
+    downgradeFlags.push('Pain or inability to perform movement (0 scores detected)');
+  }
+  if (scores.some(score => score === 1)) {
+    downgradeFlags.push('Significant movement limitations (1 scores detected)');
+  }
+
+  // Check asymmetries
+  const leftRight = [
+    [functional4.inlineLungeLeft, functional4.inlineLungeRight, 'Inline Lunge'],
+    [functional4.hipHingeLeft, functional4.hipHingeRight, 'Hip Hinge'],
+    [functional4.lateralLungeLeft, functional4.lateralLungeRight, 'Lateral Lunge']
+  ];
+
+  leftRight.forEach(([left, right, test]) => {
+    const leftScore = parseInt(left) || 0;
+    const rightScore = parseInt(right) || 0;
+    const diff = Math.abs(leftScore - rightScore);
+
+    // Major asymmetries = downgrade flags
+    if (diff >= 2 || (diff >= 1 && (leftScore === 1 || rightScore === 1))) {
+      downgradeFlags.push(`${test} major asymmetry (${leftScore}/${rightScore})`);
     }
-
-    // Current injury concerns
-    if (clientInfo.currentInjuryConcerns && clientInfo.currentInjuryConcerns.trim()) {
-      modifyFlags.push('Current injury concerns reported');
+    // Minor asymmetries = modify flags (only when both sides are 2+)
+    else if (diff === 1 && leftScore >= 2 && rightScore >= 2) {
+      modifyFlags.push(`${test} minor asymmetry (${leftScore}/${rightScore})`);
     }
+  });
 
-    // F4 score flags
-    const scores = Object.values(functional4).map(score => parseInt(score) || 0);
-
-    // Downgrade flags (force to Foundations)
-    if (scores.some(score => score === 0)) {
-      downgradeFlags.push('Pain or inability to perform movement (0 scores detected)');
-    }
-    if (scores.some(score => score === 1)) {
-      downgradeFlags.push('Significant movement limitations (1 scores detected)');
-    }
-
-    // Check asymmetries
-    const leftRight = [
-      [functional4.inlineLungeLeft, functional4.inlineLungeRight, 'Inline Lunge'],
-      [functional4.hipHingeLeft, functional4.hipHingeRight, 'Hip Hinge'],
-      [functional4.lateralLungeLeft, functional4.lateralLungeRight, 'Lateral Lunge']
-    ];
-
-    leftRight.forEach(([left, right, test]) => {
-      const leftScore = parseInt(left) || 0;
-      const rightScore = parseInt(right) || 0;
-      const diff = Math.abs(leftScore - rightScore);
-
-      if (diff >= 2 || (diff >= 1 && (leftScore <= 1 || rightScore <= 1))) {
-        downgradeFlags.push(`${test} major asymmetry (${leftScore}/${rightScore})`);
-      } else if (diff >= 1) {
-        modifyFlags.push(`${test} minor asymmetry (${leftScore}/${rightScore})`);
-      }
-    });
-
-    // Monitor flags
-    if (clientInfo.injuryHistory && clientInfo.injuryHistory.trim()) {
-      monitorFlags.push('Previous injury history to monitor');
-    }
-
-    if (clientInfo.age && parseInt(clientInfo.age) >= 50) {
-      monitorFlags.push('Age considerations (50+)');
-    }
-
-    return { downgradeFlags, modifyFlags, monitorFlags };
+  return { downgradeFlags, modifyFlags };
+};
   };
 
   // Refined Program Logic
