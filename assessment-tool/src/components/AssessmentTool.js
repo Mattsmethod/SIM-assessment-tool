@@ -338,63 +338,110 @@ return { downgradeFlags, modifyFlags, monitorFlags: [] };
       };
 
       // Helper function to summarize F4 details
-      const summarizeF4Details = () => {
-        const scores = [
-          `OHS: ${functional4.overheadSquat || 'N/A'}`,
-          `IL-L: ${functional4.inlineLungeLeft || 'N/A'}`,
-          `IL-R: ${functional4.inlineLungeRight || 'N/A'}`,
-          `HH-L: ${functional4.hipHingeLeft || 'N/A'}`,
-          `HH-R: ${functional4.hipHingeRight || 'N/A'}`,
-          `LL-L: ${functional4.lateralLungeLeft || 'N/A'}`,
-          `LL-R: ${functional4.lateralLungeRight || 'N/A'}`
-        ].join(' | ');
+// Helper function to summarize F4 details
+const summarizeF4Details = () => {
+  const sections = [];
 
-        const notes = [
-          observationNotes.overheadSquat,
-          observationNotes.inlineLunge,
-          observationNotes.hipHinge,
-          observationNotes.lateralLunge
-        ].filter(note => note?.trim()).join(' | ');
+  // Overhead Squat
+  const ohsScore = functional4.overheadSquat || 'N/A';
+  const ohsNote = observationNotes.overheadSquat?.trim();
+  sections.push(`OHS: ${ohsScore}${ohsNote ? ` - ${ohsNote}` : ''}`);
 
-        return `Scores: ${scores}${notes ? ` | Notes: ${notes}` : ''}`;
-      };
+  // Inline Lunge
+  const ilLeft = functional4.inlineLungeLeft || 'N/A';
+  const ilRight = functional4.inlineLungeRight || 'N/A';
+  const ilNote = observationNotes.inlineLunge?.trim();
+  sections.push(`IL-L: ${ilLeft}, IL-R: ${ilRight}${ilNote ? ` - ${ilNote}` : ''}`);
+
+  // Hip Hinge
+  const hhLeft = functional4.hipHingeLeft || 'N/A';
+  const hhRight = functional4.hipHingeRight || 'N/A';
+  const hhNote = observationNotes.hipHinge?.trim();
+  sections.push(`HH-L: ${hhLeft}, HH-R: ${hhRight}${hhNote ? ` - ${hhNote}` : ''}`);
+
+  // Lateral Lunge
+  const llLeft = functional4.lateralLungeLeft || 'N/A';
+  const llRight = functional4.lateralLungeRight || 'N/A';
+  const llNote = observationNotes.lateralLunge?.trim();
+  sections.push(`LL-L: ${llLeft}, LL-R: ${llRight}${llNote ? ` - ${llNote}` : ''}`);
+
+  return sections.join('\n\n');
+};
 
       // Helper function to summarize F8
-      const summarizeF8 = () => {
-        const attemptedTests = Object.entries(fundamental8)
-          .filter(([, test]) => test.attempted)
-          .map(([testName]) => testName);
+// Helper function to summarize F8
+const summarizeF8 = () => {
+  const sections = [];
 
-        if (attemptedTests.length === 0) {
-          return 'No Fundamental 8 tests performed';
-        }
+  // ASLR
+  if (fundamental8.aslr.attempted) {
+    const aslrLeft = fundamental8.aslr.left || 'N/A';
+    const aslrRight = fundamental8.aslr.right || 'N/A';
+    const aslrNote = fundamental8.aslr.notes?.trim();
+    sections.push(`ASLR: L${aslrLeft}, R${aslrRight}${aslrNote ? ` - ${aslrNote}` : ''}`);
+  }
 
-        const testSummaries = attemptedTests.map(testName => {
-          const test = fundamental8[testName];
-          if (test.left !== undefined && test.right !== undefined) {
-            return `${testName}: L${test.left}/R${test.right}`;
-          } else if (test.score !== undefined) {
-            return `${testName}: ${test.score}`;
-          } else {
-            return `${testName}: attempted`;
-          }
-        });
+  // FABER
+  if (fundamental8.faber.attempted) {
+    const faberLeft = fundamental8.faber.left || 'N/A';
+    const faberRight = fundamental8.faber.right || 'N/A';
+    const faberNote = fundamental8.faber.notes?.trim();
+    sections.push(`FABER: L${faberLeft}, R${faberRight}${faberNote ? ` - ${faberNote}` : ''}`);
+  }
 
-        const allNotes = attemptedTests
-          .map(testName => fundamental8[testName].notes)
-          .filter(note => note?.trim())
-          .join(' | ');
+  // Hip IR
+  if (fundamental8.hipIR.attempted) {
+    const hipIRLeft = fundamental8.hipIR.left || 'N/A';
+    const hipIRRight = fundamental8.hipIR.right || 'N/A';
+    const hipIRNote = fundamental8.hipIR.notes?.trim();
+    sections.push(`Hip IR: L${hipIRLeft}, R${hipIRRight}${hipIRNote ? ` - ${hipIRNote}` : ''}`);
+  }
 
-        let summary = `Tests: ${testSummaries.join(' | ')}`;
-        if (allNotes) {
-          summary += ` | Notes: ${allNotes}`;
-        }
-        if (observationNotes.fundamental8Overall?.trim()) {
-          summary += ` | Overall: ${observationNotes.fundamental8Overall}`;
-        }
+  // Ankle Mobility
+  if (fundamental8.ankleMobility.attempted) {
+    const ankleLeft = fundamental8.ankleMobility.left || 'N/A';
+    const ankleRight = fundamental8.ankleMobility.right || 'N/A';
+    const ankleNote = fundamental8.ankleMobility.notes?.trim();
+    sections.push(`Ankle Mobility: L${ankleLeft}, R${ankleRight}${ankleNote ? ` - ${ankleNote}` : ''}`);
+  }
 
-        return summary;
-      };
+  // Trunk Stability
+  if (fundamental8.trunkStability.attempted) {
+    const trunkScore = fundamental8.trunkStability.score || 'N/A';
+    const trunkNote = fundamental8.trunkStability.notes?.trim();
+    sections.push(`Trunk Stability: ${trunkScore}${trunkNote ? ` - ${trunkNote}` : ''}`);
+  }
+
+  // Single Leg Balance
+  if (fundamental8.singleLegBalance.attempted) {
+    const balanceLeft = fundamental8.singleLegBalance.left || 'N/A';
+    const balanceRight = fundamental8.singleLegBalance.right || 'N/A';
+    const balanceNote = fundamental8.singleLegBalance.notes?.trim();
+    sections.push(`Single Leg Balance: L${balanceLeft}, R${balanceRight}${balanceNote ? ` - ${balanceNote}` : ''}`);
+  }
+
+  // Shoulder Mobility
+  if (fundamental8.shoulderMobility.attempted) {
+    const shoulderLeft = fundamental8.shoulderMobility.left || 'N/A';
+    const shoulderRight = fundamental8.shoulderMobility.right || 'N/A';
+    const shoulderNote = fundamental8.shoulderMobility.notes?.trim();
+    sections.push(`Shoulder Mobility: L${shoulderLeft}, R${shoulderRight}${shoulderNote ? ` - ${shoulderNote}` : ''}`);
+  }
+
+  // Crawl Position
+  if (fundamental8.crawlPosition.attempted) {
+    const crawlScore = fundamental8.crawlPosition.score || 'N/A';
+    const crawlNote = fundamental8.crawlPosition.notes?.trim();
+    sections.push(`Crawl Position: ${crawlScore}${crawlNote ? ` - ${crawlNote}` : ''}`);
+  }
+
+  // Overall F8 notes
+  if (observationNotes.fundamental8Overall?.trim()) {
+    sections.push(`\nOVERALL F8 NOTES:\n${observationNotes.fundamental8Overall}`);
+  }
+
+  return sections.length > 0 ? sections.join('\n\n') : 'No Fundamental 8 tests performed';
+};
 
       // Helper function to summarize strength details
       const summarizeStrengthDetails = () => {
