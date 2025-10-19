@@ -223,40 +223,52 @@ return { downgradeFlags, modifyFlags, monitorFlags: [] };
 };
 
   // Refined Program Logic
-  const getSystemProgramRecommendation = () => {
-    const movementLevel = getMovementLevel();
-    const strengthLevel = getStrengthLevel();
-    const { downgradeFlags, modifyFlags } = getCategorizedRedFlags();
+  // Refined Program Logic
+const getSystemProgramRecommendation = () => {
+  const movementLevel = getMovementLevel();
+  const strengthLevel = getStrengthLevel();
+  const { downgradeFlags, modifyFlags } = getCategorizedRedFlags();
 
-    // Step 1: Base program eligibility (ignore red flags)
-    let baseProgram;
-    if (movementLevel < 2 || strengthLevel < 2) {
-      baseProgram = 'Foundations';
-    } else if (movementLevel === 2 && strengthLevel >= 2) {
-      baseProgram = 'Graduation';
-    } else if (movementLevel >= 3 && strengthLevel >= 2) {
-      baseProgram = 'Squad';
-    } else {
-      baseProgram = 'Foundations';
-    }
-
-    // Step 2: Apply red flag modifications
-    if (downgradeFlags.length > 0) {
+  // Step 1: Check for downgrade flags (force to Foundations)
+  if (downgradeFlags.length > 0) {
+    // Check if there's also a current injury
+    const hasCurrentInjury = clientInfo.currentInjuryConcerns && clientInfo.currentInjuryConcerns.trim();
+    if (hasCurrentInjury) {
       return 'Foundations (IRM Modified)';
     }
+    return 'Foundations';
+  }
 
-    if (modifyFlags.length > 0) {
-      if (baseProgram === 'Foundations') {
-        return 'Foundations (IRM Modified)';
-      } else if (baseProgram === 'Graduation') {
-        return 'Graduation (IRM Modified)';
-      } else if (baseProgram === 'Squad') {
-        return 'Graduation (IRM Modified)';
-      }
+  // Step 2: Determine base program based on levels
+  let baseProgram;
+  if (movementLevel < 2 || strengthLevel < 2) {
+    baseProgram = 'Foundations';
+  } else if (movementLevel === 2 && strengthLevel >= 2) {
+    // Check if high Level 2 (Squad-eligible)
+    const scores = Object.values(functional4).map(score => parseInt(score) || 0);
+    const averageScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+    
+    // High Level 2 = average F4 score of 2.5+ (mostly 2s and 3s)
+    if (averageScore >= 2.5) {
+      baseProgram = 'Squad';
+    } else {
+      baseProgram = 'Graduation';
     }
+  } else if (movementLevel >= 3 && strengthLevel >= 2) {
+    baseProgram = 'Squad';
+  } else {
+    baseProgram = 'Foundations';
+  }
 
-    return baseProgram;
-  };
+  // Step 3: Add IRM Modified ONLY if current injury concern exists
+  const hasCurrentInjury = clientInfo.currentInjuryConcerns && clientInfo.currentInjuryConcerns.trim();
+  
+  if (hasCurrentInjury) {
+    return `${baseProgram} (IRM Modified)`;
+  }
+
+  return baseProgram;
+};
 
   const getFinalProgramRecommendation = () => {
     if (coachOverride.enabled && coachOverride.program) {
