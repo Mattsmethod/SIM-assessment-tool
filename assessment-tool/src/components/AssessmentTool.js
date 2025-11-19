@@ -1107,10 +1107,9 @@ disabled={
                 className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select score...</option>
-                <option value="3">3 - Control with block touch single leg, good hinge, no valgus, no pelvic instability</option>
-                <option value="2">2 - Controlled block touch with toe touch back foot, no valgus, no pelvic instability</option>
-                <option value="1">1 - VIPR tilt with control, no valgus, no pelvic instability</option>
-                <option value="0">0 - Pain or inability to hinge after cueing, trunk compensation with VIPR</option>
+<option value="3">3 - Single leg hinge, perfect form, no valgus, no pelvic instability</option>
+<option value="2">2 - Single leg hinge, toe touch with back foot, no valgus, no pelvic instability</option>
+<option value="1">1 - Single leg hinge, sliding back foot along floor, some valgus & pelvic instability apparent</option>
               </select>
             </div>
             <div>
@@ -1120,11 +1119,9 @@ disabled={
                 onChange={(e) => setFunctional4(prev => ({...prev, hipHingeRight: e.target.value}))}
                 className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select score...</option>
-                <option value="3">3 - Control with block touch single leg, good hinge, no valgus, no pelvic instability</option>
-                <option value="2">2 - Controlled block touch with toe touch back foot, no valgus, no pelvic instability</option>
-                <option value="1">1 - VIPR tilt with control, no valgus, no pelvic instability</option>
-                <option value="0">0 - Pain or inability to hinge after cueing, trunk compensation with VIPR</option>
+<option value="3">3 - Single leg hinge, perfect form, no valgus, no pelvic instability</option>
+<option value="2">2 - Single leg hinge, toe touch with back foot, no valgus, no pelvic instability</option>
+<option value="1">1 - Single leg hinge, sliding back foot along floor, some valgus & pelvic instability apparent</option>
               </select>
             </div>
           </div>
@@ -1156,7 +1153,7 @@ disabled={
                 <option value="">Select score...</option>
                 <option value="3">3 - Hip over knee and foot, dynamic shift, step into lateral hinge</option>
                 <option value="2">2 - Lateral split stance setup, shift into lateral hinge</option>
-                <option value="1">1 - Can move left or right but pelvic compensations obvious</option>
+                <option value="1">1 - Can move laterally but pelvic compensations or knee dominant</option>
                 <option value="0">0 - Pain or general inability to move laterally</option>
               </select>
             </div>
@@ -1170,7 +1167,7 @@ disabled={
                 <option value="">Select score...</option>
                 <option value="3">3 - Hip over knee and foot, dynamic shift, step into lateral hinge</option>
                 <option value="2">2 - Lateral split stance setup, shift into lateral hinge</option>
-                <option value="1">1 - Can move left or right but pelvic compensations obvious</option>
+                <option value="1">1 - Can move laterally but pelvic compensations or knee dominant</option>
                 <option value="0">0 - Pain or general inability to move laterally</option>
               </select>
             </div>
@@ -1297,9 +1294,9 @@ disabled={
                     className="w-full p-2 border border-red-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Heel past mid-thigh, clean movement</option>
-                    <option value="2">2 - Heel past knee level</option>
-                    <option value="1">1 - Can't reach past kneecap</option>
+                    <option value="3">3 - Heel past mid-thigh, clean movement, no compensations in down leg</option>
+                    <option value="2">2 - Heel past knee level, no compensations in down leg</option>
+                    <option value="1">1 - Can't reach past kneecap, no compensations in down leg</option>
                     <option value="0">0 - Pain or can't perform</option>
                   </select>
                 </div>
@@ -1314,9 +1311,9 @@ disabled={
                     className="w-full p-2 border border-red-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Heel past mid-thigh, clean movement</option>
-                    <option value="2">2 - Heel past knee level</option>
-                    <option value="1">1 - Can't reach past kneecap</option>
+                    <option value="3">3 - Heel past mid-thigh, clean movement, no compensations in down leg</option>
+                    <option value="2">2 - Heel past knee level, no compensations in down leg</option>
+                    <option value="1">1 - Can't reach past kneecap, no compensations in down leg</option>
                     <option value="0">0 - Pain or can't perform</option>
                   </select>
                 </div>
@@ -1350,9 +1347,9 @@ disabled={
               }))}
               className="mr-2"
             />
-            <h3 className="font-semibold text-lg text-orange-800">2. FABER Test</h3>
+            <h3 className="font-semibold text-lg text-orange-800">2. SEATED FABER Test</h3>
           </div>
-          <p className="text-sm text-orange-700 mb-3">Tests: Hip internal rotation mobility, hip flexor length</p>
+          <p className="text-sm text-orange-700 mb-3">Tests: Hip mobility, external rotation</p>
           
           {fundamental8.faber.attempted && (
             <div className="space-y-4">
@@ -1368,9 +1365,9 @@ disabled={
                     className="w-full p-2 border border-orange-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Knee touches table, no compensations</option>
-                    <option value="2">2 - Knee within 6cm of table</option>
-                    <option value="1">1 - Knee more than 6cm from table</option>
+                    <option value="3">3 - Knee touches floor, no compensations</option>
+                    <option value="2">2 - Knee within 6cm of floor</option>
+                    <option value="1">1 - Knee more than 6cm from floor</option>
                     <option value="0">0 - Pain or can't perform</option>
                   </select>
                 </div>
@@ -1385,9 +1382,9 @@ disabled={
                     className="w-full p-2 border border-orange-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Knee touches table, no compensations</option>
-                    <option value="2">2 - Knee within 6cm of table</option>
-                    <option value="1">1 - Knee more than 6cm from table</option>
+                    <option value="3">3 - Knee touches floor, no compensations</option>
+                    <option value="2">2 - Knee within 6cm of floor</option>
+                    <option value="1">1 - Knee more than 6cm from floor</option>
                     <option value="0">0 - Pain or can't perform</option>
                   </select>
                 </div>
@@ -1423,7 +1420,7 @@ disabled={
             />
             <h3 className="font-semibold text-lg text-yellow-800">3. Hip Internal Rotation</h3>
           </div>
-          <p className="text-sm text-yellow-700 mb-3">Tests: Hip internal rotation mobility in prone position</p>
+          <p className="text-sm text-yellow-700 mb-3">Tests: Hip internal rotation</p>
           
           {fundamental8.hipIR.attempted && (
             <div className="space-y-4">
@@ -1510,10 +1507,10 @@ disabled={
                     className="w-full p-2 border border-green-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Knee past toes (13cm+)</option>
-                    <option value="2">2 - Knee to toes (10-12cm)</option>
-                    <option value="1">1 - Knee close to toes (5-9cm)</option>
-                    <option value="0">0 - Less than 5cm or pain</option>
+                    <option value="3">3 - Knee touches wall, 4 finger width from wall, heel on floor</option>
+                    <option value="2">2 - Knee touches wall, 2 finger width from wall, heel on floor</option>
+                    <option value="1">1 - Knee touches wall, no gap from wall, heel on floor</option>
+                    <option value="0">0 - Cannot touch wall with knee or pain</option>
                   </select>
                 </div>
                 <div>
@@ -1527,10 +1524,10 @@ disabled={
                     className="w-full p-2 border border-green-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Knee past toes (13cm+)</option>
-                    <option value="2">2 - Knee to toes (10-12cm)</option>
-                    <option value="1">1 - Knee close to toes (5-9cm)</option>
-                    <option value="0">0 - Less than 5cm or pain</option>
+                    <option value="3">3 - Knee touches wall, 4 finger width from wall, heel on floor</option>
+                    <option value="2">2 - Knee touches wall, 2 finger width from wall, heel on floor</option>
+                    <option value="1">1 - Knee touches wall, no gap from wall, heel on floor</option>
+                    <option value="0">0 - Cannot touch wall with knee or pain</option>
                   </select>
                 </div>
               </div>
@@ -1581,10 +1578,10 @@ disabled={
                     className="w-full p-2 border border-blue-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Stable for 30+ seconds</option>
-                    <option value="2">2 - Stable for 15-29 seconds</option>
-                    <option value="1">1 - Stable for 5-14 seconds</option>
-                    <option value="0">0 - Less than 5 seconds or can't perform</option>
+                    <option value="3">3 - 10 seconds, arms & dowel overhead, perfect form</option>
+                    <option value="2">2 - 10 seconds, dowel across shoulders, good form, minor compensations</option>
+                    <option value="1">1 - 10 seconds, dowel across shoulders, wobbly with compensations</option>
+                    <option value="0">0 - Pain or can't hold for 10 seconds</option>
                   </select>
                 </div>
                 <div>
@@ -1598,10 +1595,10 @@ disabled={
                     className="w-full p-2 border border-blue-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Stable for 30+ seconds</option>
-                    <option value="2">2 - Stable for 15-29 seconds</option>
-                    <option value="1">1 - Stable for 5-14 seconds</option>
-                    <option value="0">0 - Less than 5 seconds or can't perform</option>
+                    <option value="3">3 - 10 seconds, arms & dowel overhead, perfect form</option>
+                    <option value="2">2 - 10 seconds, dowel across shoulders, good form, minor compensations</option>
+                    <option value="1">1 - 10 seconds, dowel across shoulders, wobbly with compensations</option>
+                    <option value="0">0 - Pain or can't hold for 10 seconds</option>
                   </select>
                 </div>
               </div>
@@ -1651,10 +1648,10 @@ disabled={
                   className="w-full p-2 border border-indigo-300 rounded-md"
                 >
                   <option value="">Select score...</option>
-                  <option value="3">3 - Performs push-up from toes with straight body</option>
-                  <option value="2">2 - Performs push-up from knees with straight line</option>
-                  <option value="1">1 - Unable to perform one repetition</option>
-                  <option value="0">0 - Pain or cannot maintain position</option>
+                  <option value="3">3 - Push up from dead position on floor, perfect form, no compensation</option>
+                  <option value="2">2 - 5 second lower from top to floor, no compensation</option>
+                  <option value="1">1 - Push ups or lowers with compensation at lower back</option>
+                  <option value="0">0 - Pain or inability to perform either movement</option>
                 </select>
               </div>
               <div>
@@ -1704,10 +1701,10 @@ disabled={
                     className="w-full p-2 border border-purple-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Fists within one hand length</option>
-                    <option value="2">2 - Fists within 1.5 hand lengths</option>
-                    <option value="1">1 - Fists more than 1.5 hand lengths apart</option>
-                    <option value="0">0 - Cannot reach or pain</option>
+                    <option value="3">3 - Fists within 1 fist length</option>
+                    <option value="2">2 - Fists within 2 fist length</option>
+                    <option value="1">1 - Fists within 3 fists length</option>
+                    <option value="0">0 - Pain or inability to perform movement</option>
                   </select>
                 </div>
                 <div>
@@ -1721,10 +1718,10 @@ disabled={
                     className="w-full p-2 border border-purple-300 rounded-md"
                   >
                     <option value="">Select score...</option>
-                    <option value="3">3 - Fists within one hand length</option>
-                    <option value="2">2 - Fists within 1.5 hand lengths</option>
-                    <option value="1">1 - Fists more than 1.5 hand lengths apart</option>
-                    <option value="0">0 - Cannot reach or pain</option>
+                    <option value="3">3 - Fists within 1 fist length</option>
+                    <option value="2">2 - Fists within 2 fist length</option>
+                    <option value="1">1 - Fists within 3 fist length</option>
+                    <option value="0">0 - Pain or inability to perform movement</option>
                   </select>
                 </div>
               </div>
@@ -1774,10 +1771,10 @@ disabled={
                   className="w-full p-2 border border-pink-300 rounded-md"
                 >
                   <option value="">Select score...</option>
-                  <option value="3">3 - Holds position 30+ seconds with good form</option>
-                  <option value="2">2 - Holds position 15-29 seconds</option>
-                  <option value="1">1 - Holds position 5-14 seconds</option>
-                  <option value="0">0 - Cannot hold for 5 seconds or pain</option>
+                  <option value="3">3 - Good alignment in crawl march - knees off ground</option>
+                  <option value="2">2 - Good alignment in crawl march - knees down</option>
+                  <option value="1">1 - Good alignment in crawl hold, knees off ground</option>
+                  <option value="0">0 - Pain or inability to hold high crawl position</option>
                 </select>
               </div>
               <div>
